@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: forge-server-test
+
+# Server Configuration for testing
+server:
+  port: 0  # Random port for testing
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always  # Show details in test mode
+
+# Logging Configuration for tests
+logging:
+  level:
+    root: WARN
+    com.forge: INFO
+    org.springframework.boot: INFO
+
