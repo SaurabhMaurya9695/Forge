@@ -68,7 +68,52 @@
                         <target>${java.version}</target>
                     </configuration>
                 </plugin>
+
+                <!-- Maven Antrun Plugin for copying JARs -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
             </plugins>
         </pluginManagement>
+
+        <!-- Copy all JARs to work directory after install -->
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-all-jars-to-work</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <echo message="========================================="/>
+                                <echo message="Copying all JARs to work directory..."/>
+                                <echo message="========================================="/>
+                                <mkdir dir="${work.directory}"/>
+                                
+                                <!-- Copy all JARs from all modules -->
+                                <copy todir="${work.directory}" flatten="true" overwrite="true">
+                                    <fileset dir="${project.basedir}">
+                                        <include name="**/target/*.jar"/>
+                                        <exclude name="**/target/*-sources.jar"/>
+                                        <exclude name="**/target/*-javadoc.jar"/>
+                                        <exclude name="**/target/*-original.jar"/>
+                                    </fileset>
+                                </copy>
+                                
+                                <echo message="All JARs copied to: ${work.directory}"/>
+                                <echo message="========================================="/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 </project>

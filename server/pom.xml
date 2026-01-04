@@ -21,7 +21,6 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <work.directory>${project.parent.basedir}/work</work.directory>
     </properties>
 
     <dependencies>
@@ -56,32 +55,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-
-            <!-- Maven Copy Plugin - Copy JARs to work directory -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>3.1.0</version>
-                <executions>
-                    <execution>
-                        <id>copy-jars-to-work</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target>
-                                <echo message="Copying JARs to work directory..."/>
-                                <mkdir dir="${work.directory}"/>
-                                <copy file="${project.build.directory}/${project.build.finalName}.jar"
-                                      tofile="${work.directory}/${project.build.finalName}.jar"
-                                      overwrite="true"/>
-                                <echo message="JAR copied to: ${work.directory}/${project.build.finalName}.jar"/>
-                            </target>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
