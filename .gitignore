@@ -19,10 +19,11 @@
 **/.mvn/wrapper/maven-wrapper.properties
 
 # ============================================
-# Work Directory (Build Artifacts)
+# Distribution Directory (Build Artifacts)
 # ============================================
-work/
-!work/.gitkeep
+dist/
+!dist/.gitkeep
+!dist/lib/.gitkeep
 
 # ============================================
 # IDE Files
