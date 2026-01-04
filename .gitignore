@@ -1,0 +1,136 @@
+# ============================================
+# Forge CI/CD Platform - Git Ignore
+# This file applies to all modules
+# ============================================
+
+# ============================================
+# Maven Build Output
+# ============================================
+**/target/
+**/pom.xml.tag
+**/pom.xml.releaseBackup
+**/pom.xml.versionsBackup
+**/pom.xml.next
+**/release.properties
+**/dependency-reduced-pom.xml
+**/buildNumber.properties
+**/.mvn/timing.properties
+**/.mvn/wrapper/maven-wrapper.jar
+**/.mvn/wrapper/maven-wrapper.properties
+
+# ============================================
+# Work Directory (Build Artifacts)
+# ============================================
+work/
+!work/.gitkeep
+
+# ============================================
+# IDE Files
+# ============================================
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+.metadata/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# NetBeans
+nbproject/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# Vim
+*.swp
+*.swo
+*~
+.*.sw?
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# ============================================
+# Logs
+# ============================================
+logs/
+*.log
+*.log.*
+*.out
+
+# ============================================
+# OS Files
+# ============================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# ============================================
+# Application Specific
+# ============================================
+# Application logs
+**/logs/
+**/*.log
+
+# Configuration files with sensitive data (uncomment if needed)
+# **/application-local.yml
+# **/application-local.properties
+# **/application-secret.properties
+
+# ============================================
+# Build Scripts (if generated)
+# ============================================
+*.sh.bak
+*.bat.bak
+
+# ============================================
+# Package Files
+# ============================================
+*.jar
+*.war
+*.ear
+*.zip
+*.tar
+*.tar.gz
+*.rar
+!**/src/**/*.jar
+
+
