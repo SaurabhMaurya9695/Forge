@@ -1,4 +1,4 @@
-package com.forge.server.api;
+package com.forge.server.api.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
