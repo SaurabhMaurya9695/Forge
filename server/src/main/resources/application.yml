@@ -49,6 +49,15 @@ forge:
     password-encoder:
       strategy: BCRYPT  # Options: BCRYPT, PBKDF2 (case-insensitive)
 
+# JWT Configuration
+app:
+  jwt:
+    secret: ${JWT_SECRET:ForgeCiCd@2026}
+    expiration-ms: 86400000  # 24 hours
+    refresh-expiration-ms: 604800000  # 7 days
+    token-prefix: "Bearer "
+    header-name: "Authorization"
+
 # Logging Configuration
 logging:
   level:
