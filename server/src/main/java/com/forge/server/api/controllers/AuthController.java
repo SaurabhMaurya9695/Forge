@@ -1,5 +1,6 @@
 package com.forge.server.api.controllers;
 
+import com.forge.common.constants.ApiConstants;
 import com.forge.server.api.models.request.LoginRequest;
 import com.forge.server.api.models.request.RegisterRequest;
 import com.forge.server.api.models.response.LoginResponse;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Forge Team
  */
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping(ApiConstants.API_AUTH_PATH)
 public class AuthController {
 
     private final AuthService authService;
@@ -33,15 +34,12 @@ public class AuthController {
     }
 
     /**
-     * Register a new user
-     * <p>
-     * Endpoint: POST /api/auth/register
-     * Validates the request and creates a new user account.
+     * Registers a new user
      *
-     * @param request Registration request containing username, email, password
-     * @return Registration response with user details
+     * @param request registration request containing username, email, password
+     * @return registration response with user details
      */
-    @PostMapping("/register")
+    @PostMapping(ApiConstants.ENDPOINT_REGISTER)
     public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request) {
         RegisterResponse response = authService.register(request.getUsername(), request.getEmail(),
                 request.getPassword());
@@ -54,7 +52,7 @@ public class AuthController {
      * @param request login request containing email and password
      * @return login response with user details and JWT tokens
      */
-    @PostMapping("/login")
+    @PostMapping(ApiConstants.ENDPOINT_LOGIN)
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
         LoginResponse response = authService.login(request.getEmail(), request.getPassword());
         return ResponseEntity.ok(response);

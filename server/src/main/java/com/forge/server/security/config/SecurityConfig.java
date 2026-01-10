@@ -57,7 +57,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, ApiConstants.FULL_REGISTER_PATH, ApiConstants.FULL_LOGIN_PATH).permitAll()
-                        .requestMatchers(ApiConstants.FULL_HEALTH_PATH + "/**", ApiConstants.ACTUATOR_PATH).permitAll()
+                        .requestMatchers(ApiConstants.API_HEALTH_PATH + "/**", ApiConstants.ACTUATOR_PATH).permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
