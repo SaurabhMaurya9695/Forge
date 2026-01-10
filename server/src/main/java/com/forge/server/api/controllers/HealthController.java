@@ -33,9 +33,9 @@ public class HealthController {
     @GetMapping
     public ResponseEntity<Map<String, Object>> health() {
         Map<String, Object> response = new HashMap<>();
-        response.put("status", MessageConstants.STATUS_UP);
-        response.put("service", EntityConstants.SERVICE_NAME_FORGE_SERVER);
-        response.put("timestamp", LocalDateTime.now());
+        response.put(MessageConstants.STATUS, MessageConstants.STATUS_UP);
+        response.put(MessageConstants.SERVICE, EntityConstants.SERVICE_NAME_FORGE_SERVER);
+        response.put(MessageConstants.TIMESTAMP, LocalDateTime.now());
         return ResponseEntity.ok(response);
     }
 }
