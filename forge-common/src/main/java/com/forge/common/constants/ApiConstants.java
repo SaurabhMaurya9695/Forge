@@ -23,6 +23,9 @@ public final class ApiConstants {
     // Health Check Endpoints
     public static final String ENDPOINT_HEALTH = "/";
 
+    // Test Endpoints
+    public static final String ENDPOINT_SECURE_TEST = "/secure";
+
     // Actuator Path
     public static final String ACTUATOR_PATH = "/actuator/**";
 
