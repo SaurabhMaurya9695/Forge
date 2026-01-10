@@ -1,4 +1,4 @@
-package com.forge.server.api.models.response;
+package com.forge.shared.model.response;
 
 import com.forge.common.constants.JwtConstants;
 
@@ -10,6 +10,10 @@ import java.util.UUID;
  * <p>
  * Data Transfer Object for login responses.
  * Contains user information and JWT tokens.
+ * <p>
+ * This is a shared model that can be used across modules.
+ *
+ * @author Forge Team
  */
 public class LoginResponse {
 

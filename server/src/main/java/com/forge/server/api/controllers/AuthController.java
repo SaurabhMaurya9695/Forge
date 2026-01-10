@@ -2,10 +2,10 @@ package com.forge.server.api.controllers;
 
 import com.forge.common.constants.ApiConstants;
 import com.forge.common.constants.MessageConstants;
-import com.forge.server.api.models.request.LoginRequest;
-import com.forge.server.api.models.request.RegisterRequest;
-import com.forge.server.api.models.response.LoginResponse;
-import com.forge.server.api.models.response.RegisterResponse;
+import com.forge.shared.model.request.LoginRequest;
+import com.forge.shared.model.request.RegisterRequest;
+import com.forge.shared.model.response.LoginResponse;
+import com.forge.shared.model.response.RegisterResponse;
 import com.forge.server.core.service.AuthService;
 import com.forge.server.security.util.AppUserDetails;
 import jakarta.validation.Valid;

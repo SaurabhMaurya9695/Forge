@@ -1,4 +1,4 @@
-package com.forge.server.api.models.request;
+package com.forge.shared.model.request;
 
 import com.forge.common.constants.ValidationConstants;
 import jakarta.validation.constraints.Email;
@@ -9,6 +9,10 @@ import jakarta.validation.constraints.NotBlank;
  * <p>
  * Data Transfer Object for user login requests.
  * Contains validation annotations for input validation.
+ * <p>
+ * This is a shared model that can be used across modules.
+ *
+ * @author Forge Team
  */
 public class LoginRequest {
 
@@ -36,6 +40,10 @@ public class LoginRequest {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     /**
      * Gets user password
      *
@@ -43,6 +51,10 @@ public class LoginRequest {
      */
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
 

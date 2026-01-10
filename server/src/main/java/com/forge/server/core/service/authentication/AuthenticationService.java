@@ -1,7 +1,7 @@
 package com.forge.server.core.service.authentication;
 
 import com.forge.common.constants.MessageConstants;
-import com.forge.server.api.models.response.LoginResponse;
+import com.forge.shared.model.response.LoginResponse;
 import com.forge.server.common.exception.InvalidCredentialsException;
 import com.forge.server.core.entity.User;
 import com.forge.server.core.service.PasswordEncoderService;

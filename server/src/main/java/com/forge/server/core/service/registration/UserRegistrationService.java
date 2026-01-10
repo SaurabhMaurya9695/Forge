@@ -1,7 +1,7 @@
 package com.forge.server.core.service.registration;
 
 import com.forge.common.constants.MessageConstants;
-import com.forge.server.api.models.response.RegisterResponse;
+import com.forge.shared.model.response.RegisterResponse;
 import com.forge.server.core.entity.User;
 import com.forge.server.core.service.UserService;
 

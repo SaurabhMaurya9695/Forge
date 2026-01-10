@@ -1,4 +1,4 @@
-package com.forge.server.api.models.request;
+package com.forge.shared.model.request;
 
 import com.forge.common.constants.ValidationConstants;
 import jakarta.validation.constraints.Email;
@@ -10,6 +10,8 @@ import jakarta.validation.constraints.Size;
  * <p>
  * Data Transfer Object for user registration requests.
  * Contains validation annotations for input validation.
+ * <p>
+ * This is a shared model that can be used across modules.
  *
  * @author Forge Team
  */
@@ -40,12 +42,24 @@ public class RegisterRequest {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getEmail() {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
 

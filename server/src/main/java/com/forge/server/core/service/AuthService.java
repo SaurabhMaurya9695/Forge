@@ -1,7 +1,7 @@
 package com.forge.server.core.service;
 
-import com.forge.server.api.models.response.LoginResponse;
-import com.forge.server.api.models.response.RegisterResponse;
+import com.forge.shared.model.response.LoginResponse;
+import com.forge.shared.model.response.RegisterResponse;
 import com.forge.server.core.service.authentication.AuthenticationService;
 import com.forge.server.core.service.registration.UserRegistrationService;
 

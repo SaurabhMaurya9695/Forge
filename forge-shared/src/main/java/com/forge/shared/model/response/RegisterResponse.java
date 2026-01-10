@@ -1,4 +1,4 @@
-package com.forge.server.api.models.response;
+package com.forge.shared.model.response;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -8,6 +8,8 @@ import java.util.UUID;
  * <p>
  * Data Transfer Object for user registration responses.
  * Contains user information without sensitive data like password.
+ * <p>
+ * This is a shared model that can be used across modules.
  *
  * @author Forge Team
  */
@@ -23,7 +25,8 @@ public class RegisterResponse {
     public RegisterResponse() {
     }
 
-    public RegisterResponse(UUID id, String username, String email, String role, LocalDateTime createdAt, String message) {
+    public RegisterResponse(UUID id, String username, String email, String role, LocalDateTime createdAt,
+            String message) {
         this.id = id;
         this.username = username;
         this.email = email;
