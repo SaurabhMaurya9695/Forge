@@ -39,7 +39,7 @@ public class User {
     private String email;
 
     @NotBlank(message = "Password is required")
-    @Column(name = "password_hash", nullable = false)
+    @Column(name = "password", nullable = false)
     private String passwordHash;
 
     @Column(name = "role", nullable = false, length = 50)
