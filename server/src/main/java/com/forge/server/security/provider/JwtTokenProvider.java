@@ -8,6 +8,7 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 
+import com.forge.common.constants.JwtConstants;
 import com.forge.server.security.config.JwtConfig;
 
 import org.slf4j.Logger;
@@ -84,8 +85,8 @@ public class JwtTokenProvider {
         Date expiryDate = new Date(now.getTime() + jwtConfig.getExpirationMs());
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put("email", email);
-        claims.put("name", name);
+        claims.put(JwtConstants.CLAIM_EMAIL, email);
+        claims.put(JwtConstants.CLAIM_NAME, name);
 
         return Jwts.builder()
                 .subject(id)
@@ -133,7 +134,7 @@ public class JwtTokenProvider {
      */
     public String getEmailFromToken(String token) {
         Claims claims = getClaims(token);
-        return claims.get("email", String.class);
+        return claims.get(JwtConstants.CLAIM_EMAIL, String.class);
     }
 
     /**
@@ -144,7 +145,7 @@ public class JwtTokenProvider {
      */
     public String getNameFromToken(String token) {
         Claims claims = getClaims(token);
-        return claims.get("name", String.class);
+        return claims.get(JwtConstants.CLAIM_NAME, String.class);
     }
 
     /**
@@ -158,15 +159,15 @@ public class JwtTokenProvider {
             getClaims(token);
             return true;
         } catch (SignatureException ex) {
-            logger.warn("Invalid JWT signature: {}", ex.getMessage());
+            logger.warn(JwtConstants.LOG_INVALID_SIGNATURE, ex.getMessage());
         } catch (MalformedJwtException ex) {
-            logger.warn("Invalid JWT token: {}", ex.getMessage());
+            logger.warn(JwtConstants.LOG_INVALID_TOKEN, ex.getMessage());
         } catch (ExpiredJwtException ex) {
-            logger.warn("Expired JWT token: {}", ex.getMessage());
+            logger.warn(JwtConstants.LOG_EXPIRED_TOKEN, ex.getMessage());
         } catch (UnsupportedJwtException ex) {
-            logger.warn("Unsupported JWT token: {}", ex.getMessage());
+            logger.warn(JwtConstants.LOG_UNSUPPORTED_TOKEN, ex.getMessage());
         } catch (IllegalArgumentException ex) {
-            logger.warn("JWT claims string is empty: {}", ex.getMessage());
+            logger.warn(JwtConstants.LOG_EMPTY_CLAIMS, ex.getMessage());
         }
         return false;
     }

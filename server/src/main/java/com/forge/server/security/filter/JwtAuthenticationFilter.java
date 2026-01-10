@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import com.forge.common.constants.JwtConstants;
 import com.forge.server.security.config.JwtConfig;
 import com.forge.server.security.provider.JwtTokenProvider;
 import com.forge.server.security.util.AppUserDetailsService;
@@ -75,7 +76,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         } catch (Exception e) {
-            logger.error("Failed to set user authentication: {}", e.getMessage());
+            logger.error(JwtConstants.LOG_AUTHENTICATION_FAILED, e.getMessage());
             SecurityContextHolder.clearContext();
         }
         filterChain.doFilter(request, response);

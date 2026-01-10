@@ -1,5 +1,6 @@
 package com.forge.server.core.service.password;
 
+import com.forge.common.constants.PasswordConstants;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Component;
 @Component("bcryptPasswordEncoderStrategy")
 public class BcryptPasswordEncoderStrategy implements PasswordEncoderStrategy {
 
-    private static final String STRATEGY_NAME = "BCRYPT";
     private final PasswordEncoder passwordEncoder;
 
     public BcryptPasswordEncoderStrategy() {
@@ -34,7 +34,7 @@ public class BcryptPasswordEncoderStrategy implements PasswordEncoderStrategy {
 
     @Override
     public String getStrategyName() {
-        return STRATEGY_NAME;
+        return PasswordConstants.STRATEGY_BCRYPT;
     }
 }
 

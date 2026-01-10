@@ -20,6 +20,7 @@
     <description>Forge CI/CD Platform - Parent POM</description>
 
     <modules>
+        <module>forge-common</module>
         <module>server</module>
         <module>dist</module>
         <!-- Add more modules here as you create them -->

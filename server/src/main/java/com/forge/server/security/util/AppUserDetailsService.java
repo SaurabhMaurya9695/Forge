@@ -1,5 +1,6 @@
 package com.forge.server.security.util;
 
+import com.forge.common.constants.PasswordConstants;
 import com.forge.server.core.entity.User;
 import com.forge.server.core.repository.UserRepository;
 
@@ -67,7 +68,7 @@ public class AppUserDetailsService implements UserDetailsService {
      */
     private UserDetails buildUserDetails(User user) {
         Set<GrantedAuthority> authorities = Set.of(
-                new SimpleGrantedAuthority("ROLE_" + user.getRole().name())
+                new SimpleGrantedAuthority(PasswordConstants.ROLE_PREFIX + user.getRole().name())
         );
 
         return new AppUserDetails(

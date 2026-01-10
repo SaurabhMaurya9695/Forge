@@ -1,5 +1,7 @@
 package com.forge.server.api.models.response;
 
+import com.forge.common.constants.JwtConstants;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -22,7 +24,7 @@ public class LoginResponse {
     private LocalDateTime loginTime;
 
     public LoginResponse() {
-        this.tokenType = "Bearer";
+        this.tokenType = JwtConstants.TOKEN_TYPE;
     }
 
     public LoginResponse(UUID id, String username, String email, String role, String accessToken, String refreshToken,
@@ -33,7 +35,7 @@ public class LoginResponse {
         this.role = role;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
-        this.tokenType = "Bearer";
+        this.tokenType = JwtConstants.TOKEN_TYPE;
         this.expiresIn = expiresIn;
         this.loginTime = LocalDateTime.now();
     }

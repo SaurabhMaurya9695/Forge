@@ -1,0 +1,20 @@
+package com.forge.common.constants;
+
+/**
+ * Validation-related constants
+ * <p>
+ * Contains all constants related to validation messages and validation rules.
+ */
+public final class ValidationConstants {
+
+    private ValidationConstants() {
+        // Utility class - prevent instantiation
+    }
+
+    // Validation Error Messages
+    public static final String VALIDATION_USERNAME_REQUIRED = "Username is required";
+    public static final String VALIDATION_EMAIL_REQUIRED = "Email is required";
+    public static final String VALIDATION_EMAIL_INVALID = "Email should be valid";
+    public static final String VALIDATION_PASSWORD_REQUIRED = "Password is required";
+}
+

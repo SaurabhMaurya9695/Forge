@@ -1,5 +1,6 @@
 package com.forge.server.core.entity;
 
+import com.forge.common.constants.ValidationConstants;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -28,17 +29,17 @@ public class User {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @NotBlank(message = "Username is required")
+    @NotBlank(message = ValidationConstants.VALIDATION_USERNAME_REQUIRED)
     @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
     @Column(name = "username", nullable = false, unique = true, length = 50)
     private String username;
 
-    @NotBlank(message = "Email is required")
-    @Email(message = "Email should be valid")
+    @NotBlank(message = ValidationConstants.VALIDATION_EMAIL_REQUIRED)
+    @Email(message = ValidationConstants.VALIDATION_EMAIL_INVALID)
     @Column(name = "email", nullable = false, unique = true, length = 255)
     private String email;
 
-    @NotBlank(message = "Password is required")
+    @NotBlank(message = ValidationConstants.VALIDATION_PASSWORD_REQUIRED)
     @Column(name = "password", nullable = false)
     private String passwordHash;
 

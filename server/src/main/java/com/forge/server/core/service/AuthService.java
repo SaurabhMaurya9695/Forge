@@ -1,5 +1,7 @@
 package com.forge.server.core.service;
 
+import com.forge.common.constants.EntityConstants;
+import com.forge.common.constants.MessageConstants;
 import com.forge.server.api.models.response.LoginResponse;
 import com.forge.server.api.models.response.RegisterResponse;
 import com.forge.server.common.exception.InvalidCredentialsException;
@@ -19,8 +21,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AuthService {
-
-    private static final String ENTITY_TYPE_USER = "USER";
 
     private final UserService userService;
     private final PasswordEncoderService passwordEncoderService;
@@ -56,7 +56,7 @@ public class AuthService {
         response.setEmail(user.getEmail());
         response.setRole(user.getRole().name());
         response.setCreatedAt(user.getCreatedAt());
-        response.setMessage("User registered successfully");
+        response.setMessage(MessageConstants.USER_REGISTERED_SUCCESSFULLY);
         return response;
     }
 
@@ -70,10 +70,10 @@ public class AuthService {
      */
     public LoginResponse login(String email, String password) {
         User user = userService.findByEmail(email)
-                .orElseThrow(() -> new InvalidCredentialsException("Invalid email or password"));
+                .orElseThrow(() -> new InvalidCredentialsException(MessageConstants.ERROR_INVALID_EMAIL_OR_PASSWORD));
 
         if (!passwordEncoderService.matches(password, user.getPasswordHash())) {
-            throw new InvalidCredentialsException("Invalid email or password");
+            throw new InvalidCredentialsException(MessageConstants.ERROR_INVALID_EMAIL_OR_PASSWORD);
         }
 
         String userId = user.getId().toString();

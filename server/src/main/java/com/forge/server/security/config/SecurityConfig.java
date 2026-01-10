@@ -1,5 +1,7 @@
 package com.forge.server.security.config;
 
+import com.forge.common.constants.ApiConstants;
+import com.forge.common.constants.SecurityConstants;
 import com.forge.server.security.filter.JwtAuthenticationFilter;
 
 import org.springframework.context.annotation.Bean;
@@ -16,7 +18,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,17 +30,6 @@ import java.util.List;
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    private static final List<String> ALLOWED_ORIGINS = Arrays.asList("http://localhost:2026", "http://127.0.0.1:2026",
-            "http://127.0.0.1:2026", "http://localhost:2026");
-    private static final List<String> ALLOWED_METHODS = Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS",
-            "PATCH");
-
-    private static final String HEADER_AUTHORIZATION = "Authorization";
-    private static final String HEADER_CONTENT_TYPE = "Content-Type";
-    private static final String HEADER_TOTAL_COUNT = "X-Total-Count";
-
-    private static final List<String> EXPOSED_HEADERS = Arrays.asList(HEADER_AUTHORIZATION, HEADER_CONTENT_TYPE,
-            HEADER_TOTAL_COUNT);
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -66,8 +56,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login").permitAll()
-                        .requestMatchers("/api/health/**", "/actuator/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, ApiConstants.FULL_REGISTER_PATH, ApiConstants.FULL_LOGIN_PATH).permitAll()
+                        .requestMatchers(ApiConstants.FULL_HEALTH_PATH + "/**", ApiConstants.ACTUATOR_PATH).permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
@@ -80,12 +70,12 @@ public class SecurityConfig {
      */
     private CorsConfigurationSource configureCorsSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(ALLOWED_ORIGINS);
-        corsConfiguration.setAllowedMethods(ALLOWED_METHODS);
+        corsConfiguration.setAllowedOrigins(SecurityConstants.ALLOWED_ORIGINS);
+        corsConfiguration.setAllowedMethods(SecurityConstants.ALLOWED_METHODS);
         corsConfiguration.setAllowedHeaders(List.of("*"));
-        corsConfiguration.setExposedHeaders(EXPOSED_HEADERS);
+        corsConfiguration.setExposedHeaders(SecurityConstants.EXPOSED_HEADERS);
         corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.setMaxAge(3600L);
+        corsConfiguration.setMaxAge(SecurityConstants.CORS_MAX_AGE);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);

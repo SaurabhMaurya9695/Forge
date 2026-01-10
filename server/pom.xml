@@ -17,6 +17,13 @@
     <description>Forge CI/CD Platform - Control Plane Server</description>
 
     <dependencies>
+        <!-- Forge Common Module -->
+        <dependency>
+            <groupId>com.forge</groupId>
+            <artifactId>forge-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <!-- Spring Boot Starters -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

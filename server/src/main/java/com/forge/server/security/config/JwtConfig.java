@@ -1,5 +1,6 @@
 package com.forge.server.security.config;
 
+import com.forge.common.constants.JwtConstants;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,8 +17,8 @@ public class JwtConfig {
     private String secret = "ForgeCiCd@2026SecureSecretKeyForJWTTokenGenerationMustBeAtLeast32Characters";
     private long expirationMs = 86400000; // 24 hours
     private long refreshExpirationMs = 604800000; // 7 days
-    private String tokenPrefix = "Bearer ";
-    private String headerName = "Authorization";
+    private String tokenPrefix = JwtConstants.TOKEN_PREFIX;
+    private String headerName = JwtConstants.HEADER_NAME;
 
     /**
      * Gets the JWT secret key

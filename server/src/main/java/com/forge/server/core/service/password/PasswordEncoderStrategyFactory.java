@@ -1,5 +1,6 @@
 package com.forge.server.core.service.password;
 
+import com.forge.common.constants.PasswordConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,7 +40,7 @@ public class PasswordEncoderStrategyFactory {
                 ));
 
         // Set BCrypt as default strategy
-        this.defaultStrategy = strategies.getOrDefault("BCRYPT", strategyList.get(0));
+        this.defaultStrategy = strategies.getOrDefault(PasswordConstants.STRATEGY_BCRYPT, strategyList.get(0));
     }
 
     /**

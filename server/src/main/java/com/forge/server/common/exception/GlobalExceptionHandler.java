@@ -1,5 +1,7 @@
 package com.forge.server.common.exception;
 
+import com.forge.common.constants.MessageConstants;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -34,8 +36,8 @@ public class GlobalExceptionHandler {
         });
 
         Map<String, Object> response = new HashMap<>();
-        response.put("status", "error");
-        response.put("message", "Validation failed");
+        response.put("status", MessageConstants.STATUS_ERROR);
+        response.put("message", MessageConstants.ERROR_VALIDATION_FAILED);
         response.put("errors", errors);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
@@ -47,7 +49,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<Map<String, Object>> handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
         Map<String, Object> response = new HashMap<>();
-        response.put("status", "error");
+        response.put("status", MessageConstants.STATUS_ERROR);
         response.put("message", ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
@@ -59,7 +61,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<Map<String, Object>> handleInvalidCredentialsException(InvalidCredentialsException ex) {
         Map<String, Object> response = new HashMap<>();
-        response.put("status", "error");
+        response.put("status", MessageConstants.STATUS_ERROR);
         response.put("message", ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
@@ -71,8 +73,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Map<String, Object>> handleRuntimeException(RuntimeException ex) {
         Map<String, Object> response = new HashMap<>();
-        response.put("status", "error");
-        response.put("message", "An unexpected error occurred: " + ex.getMessage());
+        response.put("status", MessageConstants.STATUS_ERROR);
+        response.put("message", String.format(MessageConstants.ERROR_UNEXPECTED, ex.getMessage()));
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
