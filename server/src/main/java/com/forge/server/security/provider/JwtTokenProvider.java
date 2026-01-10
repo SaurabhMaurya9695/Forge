@@ -38,10 +38,37 @@ public class JwtTokenProvider {
      * Constructor for JwtTokenProvider
      *
      * @param jwtConfig JWT configuration
+     * @throws IllegalStateException if JWT secret is null or empty, or if key generation fails
      */
     public JwtTokenProvider(JwtConfig jwtConfig) {
         this.jwtConfig = jwtConfig;
-        this.secretKey = Keys.hmacShaKeyFor(jwtConfig.getSecret().getBytes(StandardCharsets.UTF_8));
+        String secret = jwtConfig.getSecret();
+        
+        if (secret == null || secret.isEmpty()) {
+            throw new IllegalStateException("JWT secret cannot be null or empty. Please configure app.jwt.secret in application.yml");
+        }
+        
+        // Ensure secret is at least 32 bytes (256 bits) for HMAC-SHA256
+        // If shorter, hash it to meet the requirement
+        byte[] secretBytes = secret.getBytes(StandardCharsets.UTF_8);
+        if (secretBytes.length < 32) {
+            // Use SHA-256 to hash the secret and ensure it's exactly 32 bytes
+            try {
+                java.security.MessageDigest digest = java.security.MessageDigest.getInstance("SHA-256");
+                secretBytes = digest.digest(secretBytes);
+                logger.warn("JWT secret was shorter than 32 bytes. It has been hashed to meet the requirement.");
+            } catch (java.security.NoSuchAlgorithmException e) {
+                logger.error("Failed to hash JWT secret: {}", e.getMessage());
+                throw new IllegalStateException("Failed to initialize JWT secret key", e);
+            }
+        }
+        
+        try {
+            this.secretKey = Keys.hmacShaKeyFor(secretBytes);
+        } catch (Exception e) {
+            logger.error("Failed to create JWT secret key: {}", e.getMessage());
+            throw new IllegalStateException("Failed to create JWT secret key. Please ensure app.jwt.secret is properly configured.", e);
+        }
     }
 
     /**
@@ -49,17 +76,15 @@ public class JwtTokenProvider {
      *
      * @param id         user ID
      * @param email      user email
-     * @param entityType entity type
      * @param name       user name
      * @return JWT token string
      */
-    public String generateToken(String id, String email, String entityType, String name) {
+    public String generateToken(String id, String email, String name) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtConfig.getExpirationMs());
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("email", email);
-        claims.put("entityType", entityType);
         claims.put("name", name);
 
         return Jwts.builder()

@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "app.jwt")
 public class JwtConfig {
 
-    private String secret = "ForgeCiCd@2026";
+    private String secret = "ForgeCiCd@2026SecureSecretKeyForJWTTokenGenerationMustBeAtLeast32Characters";
     private long expirationMs = 86400000; // 24 hours
     private long refreshExpirationMs = 604800000; // 7 days
     private String tokenPrefix = "Bearer ";

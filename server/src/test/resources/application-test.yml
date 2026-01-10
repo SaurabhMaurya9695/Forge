@@ -16,6 +16,15 @@ management:
     health:
       show-details: always  # Show details in test mode
 
+# JWT Configuration for tests
+app:
+  jwt:
+    secret: ${JWT_SECRET:ForgeCiCd@2026SecureSecretKeyForJWTTokenGenerationMustBeAtLeast32Characters}
+    expiration-ms: 86400000  # 24 hours
+    refresh-expiration-ms: 604800000  # 7 days
+    token-prefix: "Bearer "
+    header-name: "Authorization"
+
 # Logging Configuration for tests
 logging:
   level:

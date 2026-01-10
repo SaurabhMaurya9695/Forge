@@ -31,9 +31,14 @@ public class PasswordEncoderStrategyFactory {
     @Autowired
     public PasswordEncoderStrategyFactory(List<PasswordEncoderStrategy> strategyList) {
         // Create a map of strategy name to strategy instance
-        this.strategies = strategyList.stream().collect(
-                Collectors.toMap(PasswordEncoderStrategy::getStrategyName, Function.identity(),
-                        (existing, replacement) -> existing));
+        this.strategies = strategyList.stream()
+                .collect(Collectors.toMap(
+                        PasswordEncoderStrategy::getStrategyName,
+                        Function.identity(),
+                        (existing, replacement) -> existing
+                ));
+
+        // Set BCrypt as default strategy
         this.defaultStrategy = strategies.getOrDefault("BCRYPT", strategyList.get(0));
     }
 
@@ -45,7 +50,7 @@ public class PasswordEncoderStrategyFactory {
      */
     public PasswordEncoderStrategy getStrategy(String strategyName) {
         if (strategyName == null || strategyName.isEmpty()) {
-            return getDefaultStrategy();
+            return defaultStrategy;
         }
         return strategies.getOrDefault(strategyName.toUpperCase(), defaultStrategy);
     }
