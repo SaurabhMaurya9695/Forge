@@ -28,25 +28,16 @@ public final class SecurityConstants {
     public static final String METHOD_PATCH = "PATCH";
 
     // Allowed HTTP Methods
-    public static final List<String> ALLOWED_METHODS = Arrays.asList(
-            METHOD_GET, METHOD_POST, METHOD_PUT, METHOD_DELETE, METHOD_OPTIONS, METHOD_PATCH
-    );
+    public static final List<String> ALLOWED_METHODS = Arrays.asList(METHOD_GET, METHOD_POST, METHOD_PUT, METHOD_DELETE,
+            METHOD_OPTIONS, METHOD_PATCH);
 
     // Allowed Origins (CORS)
-    public static final List<String> ALLOWED_ORIGINS = Arrays.asList(
-            "http://localhost:5173",
-            "http://localhost:3000",
-            "http://127.0.0.1:5173",
-            "http://127.0.0.1:5174",
-            "http://localhost:5174"
-    );
+    public static final List<String> ALLOWED_ORIGINS = Arrays.asList("http://localhost:5173", "http://localhost:3000",
+            "http://127.0.0.1:5173", "http://127.0.0.1:5174", "http://localhost:5174");
 
     // Exposed Headers
-    public static final List<String> EXPOSED_HEADERS = Arrays.asList(
-            HEADER_AUTHORIZATION,
-            HEADER_CONTENT_TYPE,
-            HEADER_TOTAL_COUNT
-    );
+    public static final List<String> EXPOSED_HEADERS = Arrays.asList(HEADER_AUTHORIZATION, HEADER_CONTENT_TYPE,
+            HEADER_TOTAL_COUNT);
 
     // CORS Max Age (in seconds)
     public static final long CORS_MAX_AGE = 3600L;
