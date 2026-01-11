@@ -30,6 +30,7 @@ public final class ApiConstants {
 
     // Plugin Endpoints
     public static final String ENDPOINT_PLUGIN_INSTALL = "/install";
+    public static final String ENDPOINT_PLUGIN_START = "/start";
 
     // Actuator Path
     public static final String ACTUATOR_PATH = "/actuator/**";

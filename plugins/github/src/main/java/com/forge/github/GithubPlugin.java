@@ -46,11 +46,11 @@ public class GithubPlugin implements Plugin {
 
     @Override
     public void init(PluginContext pluginContext) throws PluginException {
-        logger.info(INITIALIZING_GITHUB_PLUGIN);
         this.context = pluginContext;
         this.logger = context.getLogger();
         this.apiClient = new GithubApiClient(logger);
         state = PluginState.INITIALIZED;
+        logger.info(INITIALIZING_GITHUB_PLUGIN);
         logger.info(GITHUB_PLUGIN_INITIALIZED_SUCCESSFULLY);
     }
 

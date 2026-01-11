@@ -1,6 +1,7 @@
 package com.forge.server.plugins;
 
 import com.forge.server.common.plugin.exception.PluginException;
+import com.forge.server.core.service.plugin.PluginConfigurationService;
 import com.forge.server.plugins.api.Plugin;
 import com.forge.server.plugins.api.PluginContext;
 import com.forge.server.plugins.api.PluginRegistry;
@@ -41,6 +42,9 @@ public class PluginManager implements PluginRegistry {
             "Plugin class missing no-argument constructor: ";
     private static final String FAILED_TO_INSTANTIATE_PLUGIN = "Failed to instantiate plugin: ";
     private static final String ERROR_DURING_PLUGIN_INSTALLATION = "Unexpected error during plugin installation: ";
+    private static final String PLUGIN_NOT_FOUND = "Plugin not found: ";
+    private static final String PLUGIN_ALREADY_STARTED = "Plugin already started: ";
+    private static final String PLUGIN_STARTED_SUCCESSFULLY = "Plugin started successfully: ";
 
     // Thread-safe storage for plugins
     private final Map<String, PluginWrapper> plugins;
@@ -48,9 +52,12 @@ public class PluginManager implements PluginRegistry {
     // Thread-safe storage for ClassLoaders
     private final Map<String, PluginClassLoader> classLoaders;
 
-    public PluginManager() {
+    private final PluginConfigurationService configurationService;
+
+    public PluginManager(PluginConfigurationService configurationService) {
         this.plugins = new ConcurrentHashMap<>();
         this.classLoaders = new ConcurrentHashMap<>();
+        this.configurationService = configurationService;
     }
 
     @Override
@@ -83,7 +90,8 @@ public class PluginManager implements PluginRegistry {
 
             @SuppressWarnings("unchecked") Class<? extends Plugin> pluginType = (Class<? extends Plugin>) pluginClass;
             Plugin plugin = pluginType.getDeclaredConstructor().newInstance();
-            PluginContext context = new SimplePluginContext(pluginName);
+            Map<String, String> config = configurationService.loadPluginConfiguration(pluginName);
+            PluginContext context = new SimplePluginContext(pluginName, config);
             plugin.init(context);
             plugins.put(pluginName, new PluginWrapper(plugin, context));
             classLoaders.put(pluginName, classLoader);
@@ -144,16 +152,48 @@ public class PluginManager implements PluginRegistry {
         return null;
     }
 
+    public void startPlugin(String pluginName) throws PluginException {
+        PluginWrapper wrapper = plugins.get(pluginName);
+        if (wrapper == null) {
+            throw new PluginException(PLUGIN_NOT_FOUND + pluginName);
+        }
+
+        Plugin plugin = wrapper.getPlugin();
+        if (plugin.getState() == PluginState.STARTED) {
+            logger.info(PLUGIN_ALREADY_STARTED + pluginName);
+            return;
+        }
+
+        try {
+            plugin.start();
+            wrapper.setState(PluginState.STARTED);
+            logger.info(PLUGIN_STARTED_SUCCESSFULLY + pluginName);
+        } catch (PluginException e) {
+            wrapper.setState(PluginState.FAILED);
+            throw e;
+        }
+    }
+
+    public void reloadPluginConfiguration(String pluginName) {
+        Map<String, String> config = configurationService.loadPluginConfiguration(pluginName);
+        PluginWrapper wrapper = plugins.get(pluginName);
+        if (wrapper != null && wrapper.getContext() instanceof SimplePluginContext context) {
+            context.reloadConfig(config);
+        }
+    }
+
     private static class SimplePluginContext implements PluginContext {
 
         private final String pluginName;
         private final Logger logger;
+        private volatile Map<String, String> config;
 
-        public SimplePluginContext(String pluginName) {
+        public SimplePluginContext(String pluginName, Map<String, String> config) {
             String pluginClass = pluginName.substring(0, 1).toUpperCase() + pluginName.substring(1).toLowerCase()
                     + "Plugin";
             this.pluginName = pluginName;
             this.logger = Logger.getLogger("com.forge." + pluginName.toLowerCase() + "." + pluginClass);
+            this.config = config != null ? new ConcurrentHashMap<>(config) : new ConcurrentHashMap<>();
         }
 
         @Override
@@ -163,21 +203,24 @@ public class PluginManager implements PluginRegistry {
 
         @Override
         public Optional<String> getConfig(String key) {
-            // TODO: Implement configuration loading from config files
-            return Optional.empty();
+            return Optional.ofNullable(config.get(key));
         }
 
         @Override
         public Logger getLogger() {
             return logger;
         }
+
+        void reloadConfig(Map<String, String> newConfig) {
+            this.config = newConfig != null ? new ConcurrentHashMap<>(newConfig) : new ConcurrentHashMap<>();
+        }
     }
 
     private static class PluginWrapper {
 
         private final Plugin plugin;
-        private PluginState state;
-        private PluginContext context;
+        private volatile PluginState state;
+        private final PluginContext context;
 
         public PluginWrapper(Plugin plugin, PluginContext context) {
             this.plugin = plugin;
@@ -191,6 +234,10 @@ public class PluginManager implements PluginRegistry {
 
         public PluginState getState() {
             return state;
+        }
+
+        public void setState(PluginState state) {
+            this.state = state;
         }
 
         public PluginContext getContext() {
