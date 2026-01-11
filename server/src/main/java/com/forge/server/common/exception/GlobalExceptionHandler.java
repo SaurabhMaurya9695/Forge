@@ -1,6 +1,7 @@
 package com.forge.server.common.exception;
 
 import com.forge.common.constants.MessageConstants;
+import com.forge.server.common.plugin.exception.PluginException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,6 +66,18 @@ public class GlobalExceptionHandler {
         response.put("message", ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+
+    /**
+     * Handle plugin exceptions
+     */
+    @ExceptionHandler(PluginException.class)
+    public ResponseEntity<Map<String, Object>> handlePluginException(PluginException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", MessageConstants.STATUS_ERROR);
+        response.put("message", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     /**

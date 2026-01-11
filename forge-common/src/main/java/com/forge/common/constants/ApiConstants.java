@@ -15,6 +15,8 @@ public final class ApiConstants {
     public static final String API_BASE_PATH = "/api";
     public static final String API_AUTH_PATH = "/api/auth";
     public static final String API_HEALTH_PATH = "/api/health";
+    public static final String API_TEST_PATH = "/api/test";
+    public static final String API_PLUGINS_PATH = "/api/plugins";
 
     // Authentication Endpoints
     public static final String ENDPOINT_REGISTER = "/register";
@@ -25,6 +27,9 @@ public final class ApiConstants {
 
     // Test Endpoints
     public static final String ENDPOINT_SECURE_TEST = "/secure";
+
+    // Plugin Endpoints
+    public static final String ENDPOINT_PLUGIN_INSTALL = "/install";
 
     // Actuator Path
     public static final String ACTUATOR_PATH = "/actuator/**";
