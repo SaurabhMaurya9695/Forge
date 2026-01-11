@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserRegistrationService {
 
+    private static final String USER_REGISTERED_SUCCESSFULLY = "User registered successfully";
+
     private final UserService userService;
 
     public UserRegistrationService(UserService userService) {
@@ -36,7 +38,7 @@ public class UserRegistrationService {
         response.setEmail(user.getEmail());
         response.setRole(user.getRole().toString());
         response.setCreatedAt(user.getCreatedAt());
-        response.setMessage(MessageConstants.USER_REGISTERED_SUCCESSFULLY);
+        response.setMessage(USER_REGISTERED_SUCCESSFULLY);
         return response;
     }
 }

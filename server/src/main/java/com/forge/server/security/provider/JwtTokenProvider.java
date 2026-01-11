@@ -44,11 +44,11 @@ public class JwtTokenProvider {
     public JwtTokenProvider(JwtConfig jwtConfig) {
         this.jwtConfig = jwtConfig;
         String secret = jwtConfig.getSecret();
-        
+
         if (secret == null || secret.isEmpty()) {
-            throw new IllegalStateException("JWT secret cannot be null or empty. Please configure app.jwt.secret in application.yml");
+            throw new IllegalStateException(JwtConstants.ERROR_SECRET_NULL_OR_EMPTY);
         }
-        
+
         // Ensure secret is at least 32 bytes (256 bits) for HMAC-SHA256
         // If shorter, hash it to meet the requirement
         byte[] secretBytes = secret.getBytes(StandardCharsets.UTF_8);
@@ -57,27 +57,27 @@ public class JwtTokenProvider {
             try {
                 java.security.MessageDigest digest = java.security.MessageDigest.getInstance("SHA-256");
                 secretBytes = digest.digest(secretBytes);
-                logger.warn("JWT secret was shorter than 32 bytes. It has been hashed to meet the requirement.");
+                logger.warn(JwtConstants.ERROR_SECRET_TOO_SHORT);
             } catch (java.security.NoSuchAlgorithmException e) {
-                logger.error("Failed to hash JWT secret: {}", e.getMessage());
-                throw new IllegalStateException("Failed to initialize JWT secret key", e);
+                logger.error(JwtConstants.LOG_SECRET_HASH_FAILED, e.getMessage());
+                throw new IllegalStateException(JwtConstants.LOG_SECRET_KEY_CREATION_FAILED, e);
             }
         }
-        
+
         try {
             this.secretKey = Keys.hmacShaKeyFor(secretBytes);
         } catch (Exception e) {
-            logger.error("Failed to create JWT secret key: {}", e.getMessage());
-            throw new IllegalStateException("Failed to create JWT secret key. Please ensure app.jwt.secret is properly configured.", e);
+            logger.error(JwtConstants.LOG_SECRET_HASH_FAILED, e.getMessage());
+            throw new IllegalStateException(JwtConstants.ERROR_SECRET_KEY_CREATION_FAILED, e);
         }
     }
 
     /**
      * Generates JWT token for user
      *
-     * @param id         user ID
-     * @param email      user email
-     * @param name       user name
+     * @param id    user ID
+     * @param email user email
+     * @param name  user name
      * @return JWT token string
      */
     public String generateToken(String id, String email, String name) {
@@ -88,12 +88,7 @@ public class JwtTokenProvider {
         claims.put(JwtConstants.CLAIM_EMAIL, email);
         claims.put(JwtConstants.CLAIM_NAME, name);
 
-        return Jwts.builder()
-                .subject(id)
-                .claims(claims)
-                .issuedAt(now)
-                .expiration(expiryDate)
-                .signWith(secretKey)
+        return Jwts.builder().subject(id).claims(claims).issuedAt(now).expiration(expiryDate).signWith(secretKey)
                 .compact();
     }
 
@@ -107,12 +102,7 @@ public class JwtTokenProvider {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtConfig.getRefreshExpirationMs());
 
-        return Jwts.builder()
-                .subject(id)
-                .issuedAt(now)
-                .expiration(expiryDate)
-                .signWith(secretKey)
-                .compact();
+        return Jwts.builder().subject(id).issuedAt(now).expiration(expiryDate).signWith(secretKey).compact();
     }
 
     /**
@@ -194,10 +184,6 @@ public class JwtTokenProvider {
      * @return token claims
      */
     private Claims getClaims(String token) {
-        return Jwts.parser()
-                .verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
     }
 }

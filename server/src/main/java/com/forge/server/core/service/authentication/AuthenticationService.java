@@ -1,6 +1,5 @@
 package com.forge.server.core.service.authentication;
 
-import com.forge.common.constants.MessageConstants;
 import com.forge.shared.model.response.LoginResponse;
 import com.forge.server.common.exception.InvalidCredentialsException;
 import com.forge.server.core.entity.User;
@@ -17,6 +16,8 @@ import java.time.LocalDateTime;
  */
 @Service
 public class AuthenticationService {
+
+    private static final String ERROR_INVALID_EMAIL_OR_PASSWORD = "Invalid email or password";
 
     private final UserService userService;
     private final PasswordEncoderService passwordEncoderService;
@@ -39,10 +40,10 @@ public class AuthenticationService {
      */
     public LoginResponse authenticate(String email, String password) {
         User user = userService.findByEmail(email).orElseThrow(
-                () -> new InvalidCredentialsException(MessageConstants.ERROR_INVALID_EMAIL_OR_PASSWORD));
+                () -> new InvalidCredentialsException(ERROR_INVALID_EMAIL_OR_PASSWORD));
 
         if (!passwordEncoderService.matches(password, user.getPasswordHash())) {
-            throw new InvalidCredentialsException(MessageConstants.ERROR_INVALID_EMAIL_OR_PASSWORD);
+            throw new InvalidCredentialsException(ERROR_INVALID_EMAIL_OR_PASSWORD);
         }
 
         String userId = user.getId().toString();

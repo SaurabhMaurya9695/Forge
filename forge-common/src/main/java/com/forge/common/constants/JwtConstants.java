@@ -22,7 +22,6 @@ public final class JwtConstants {
 
     // JWT Claim Keys
     public static final String CLAIM_EMAIL = "email";
-    public static final String CLAIM_ENTITY_TYPE = "entityType";
     public static final String CLAIM_NAME = "name";
 
     // JWT Error Messages

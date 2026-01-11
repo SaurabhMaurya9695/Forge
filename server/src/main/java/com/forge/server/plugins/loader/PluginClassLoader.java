@@ -11,10 +11,12 @@ import java.nio.file.Path;
 public class PluginClassLoader extends URLClassLoader {
 
     private static final Logger logger = LoggerFactory.getLogger(PluginClassLoader.class);
+    public static final String CREATED_PLUGIN_CLASS_LOADER_FOR_PLUGIN_FROM =
+            "Created PluginClassLoader for plugin: {} from: {}";
 
     public PluginClassLoader(String pluginName, Path pluginJarPath, ClassLoader parent) throws IOException {
         super(new URL[] { pluginJarPath.toUri().toURL() }, parent);
-        logger.debug("Created PluginClassLoader for plugin: {} from: {}", pluginName, pluginJarPath);
+        logger.debug(CREATED_PLUGIN_CLASS_LOADER_FOR_PLUGIN_FROM, pluginName, pluginJarPath);
     }
 
     @Override

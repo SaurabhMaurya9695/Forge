@@ -26,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PluginManager implements PluginRegistry {
 
     private static final Logger logger = LoggerFactory.getLogger(PluginManager.class);
+    private static final String PLUGIN_MANAGER_INITIALIZED = "Plugin Manager Initialized";
 
     // Thread-safe storage for plugins
     private final Map<String, PluginWrapper> plugins;
@@ -64,7 +65,7 @@ public class PluginManager implements PluginRegistry {
     public PluginManager() {
         this.plugins = new ConcurrentHashMap<>();
         this.classLoaders = new ConcurrentHashMap<>();
-        logger.info("Plugin Manager Initialized");
+        logger.info(PLUGIN_MANAGER_INITIALIZED);
     }
 
     @Override
@@ -74,6 +75,6 @@ public class PluginManager implements PluginRegistry {
     }
 
     public String installPlugin(String pluginName, String jarPath, String className) throws PluginException {
-        return "working now";
+        return pluginName;
     }
 }

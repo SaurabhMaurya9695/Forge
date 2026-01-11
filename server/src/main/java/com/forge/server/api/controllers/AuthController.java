@@ -36,6 +36,9 @@ import java.util.Map;
 @RequestMapping(ApiConstants.API_AUTH_PATH)
 public class AuthController {
 
+    private static final String SECURE_ENDPOINT_ACCESSED_SUCCESSFULLY = "Secure endpoint accessed successfully";
+    private static final String UNABLE_TO_RETRIEVE_USER_DETAILS = "Unable to retrieve user details";
+
     private final AuthService authService;
 
     public AuthController(AuthService authService) {
@@ -82,7 +85,7 @@ public class AuthController {
         Map<String, Object> response = new HashMap<>();
         response.put(MessageConstants.STATUS, MessageConstants.STATUS_UP);
         response.put(MessageConstants.TIMESTAMP, LocalDateTime.now());
-        response.put(MessageConstants.MESSAGE, "Secure endpoint accessed successfully");
+        response.put(MessageConstants.MESSAGE, SECURE_ENDPOINT_ACCESSED_SUCCESSFULLY);
 
         if (userDetails != null) {
             Map<String, Object> userInfo = new HashMap<>();
@@ -91,12 +94,12 @@ public class AuthController {
             userInfo.put("username", userDetails.getUsername());
             userInfo.put("authorities",
                     userDetails.getAuthorities().stream().map(auth -> auth.getAuthority()).toList());
-            response.put("user", userInfo);
+            response.put(MessageConstants.USER, userInfo);
         } else {
-            response.put("user", "Unable to retrieve user details");
+            response.put(MessageConstants.USER, UNABLE_TO_RETRIEVE_USER_DETAILS);
         }
 
-        response.put("authenticated", authentication != null && authentication.isAuthenticated());
+        response.put(MessageConstants.AUTHENTICATED, authentication != null && authentication.isAuthenticated());
 
         return ResponseEntity.ok(response);
     }

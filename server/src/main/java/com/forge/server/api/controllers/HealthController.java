@@ -1,7 +1,6 @@
 package com.forge.server.api.controllers;
 
 import com.forge.common.constants.ApiConstants;
-import com.forge.common.constants.EntityConstants;
 import com.forge.common.constants.MessageConstants;
 
 import org.springframework.http.ResponseEntity;
@@ -25,6 +24,8 @@ import java.util.Map;
 @RequestMapping(ApiConstants.API_HEALTH_PATH)
 public class HealthController {
 
+    public static final String SERVICE_NAME_FORGE_SERVER = "forge-server";
+
     /**
      * Health check endpoint
      *
@@ -34,7 +35,7 @@ public class HealthController {
     public ResponseEntity<Map<String, Object>> health() {
         Map<String, Object> response = new HashMap<>();
         response.put(MessageConstants.STATUS, MessageConstants.STATUS_UP);
-        response.put(MessageConstants.SERVICE, EntityConstants.SERVICE_NAME_FORGE_SERVER);
+        response.put(MessageConstants.SERVICE, SERVICE_NAME_FORGE_SERVER);
         response.put(MessageConstants.TIMESTAMP, LocalDateTime.now());
         return ResponseEntity.ok(response);
     }

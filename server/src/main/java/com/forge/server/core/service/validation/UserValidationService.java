@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserValidationService {
 
+    public static final String USERNAME_S_IS_ALREADY_TAKEN = "Username '%s' is already taken";
+    public static final String EMAIL_S_IS_ALREADY_REGISTERED = "Email '%s' is already registered";
     private final UserRepository userRepository;
 
     public UserValidationService(UserRepository userRepository) {
@@ -26,7 +28,7 @@ public class UserValidationService {
      */
     public void validateUsernameUnique(String username) {
         if (userRepository.existsByUsername(username)) {
-            throw new UserAlreadyExistsException(String.format("Username '%s' is already taken", username));
+            throw new UserAlreadyExistsException(String.format(USERNAME_S_IS_ALREADY_TAKEN, username));
         }
     }
 
@@ -38,7 +40,7 @@ public class UserValidationService {
      */
     public void validateEmailUnique(String email) {
         if (userRepository.existsByEmail(email)) {
-            throw new UserAlreadyExistsException(String.format("Email '%s' is already registered", email));
+            throw new UserAlreadyExistsException(String.format(EMAIL_S_IS_ALREADY_REGISTERED, email));
         }
     }
 

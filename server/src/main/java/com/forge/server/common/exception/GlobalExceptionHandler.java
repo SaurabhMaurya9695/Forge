@@ -24,6 +24,9 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final String ERROR_VALIDATION_FAILED = "Validation failed";
+    private static final String ERROR_UNEXPECTED = "An unexpected error occurred: %s";
+
     /**
      * Handle validation errors
      */
@@ -37,9 +40,9 @@ public class GlobalExceptionHandler {
         });
 
         Map<String, Object> response = new HashMap<>();
-        response.put("status", MessageConstants.STATUS_ERROR);
-        response.put("message", MessageConstants.ERROR_VALIDATION_FAILED);
-        response.put("errors", errors);
+        response.put(MessageConstants.STATUS, MessageConstants.STATUS_ERROR);
+        response.put(MessageConstants.MESSAGE, ERROR_VALIDATION_FAILED);
+        response.put(MessageConstants.STATUS_ERROR, errors);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
@@ -50,8 +53,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<Map<String, Object>> handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
         Map<String, Object> response = new HashMap<>();
-        response.put("status", MessageConstants.STATUS_ERROR);
-        response.put("message", ex.getMessage());
+        response.put(MessageConstants.STATUS, MessageConstants.STATUS_ERROR);
+        response.put(MessageConstants.MESSAGE, ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
@@ -62,8 +65,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<Map<String, Object>> handleInvalidCredentialsException(InvalidCredentialsException ex) {
         Map<String, Object> response = new HashMap<>();
-        response.put("status", MessageConstants.STATUS_ERROR);
-        response.put("message", ex.getMessage());
+        response.put(MessageConstants.STATUS, MessageConstants.STATUS_ERROR);
+        response.put(MessageConstants.MESSAGE, ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
@@ -74,8 +77,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(PluginException.class)
     public ResponseEntity<Map<String, Object>> handlePluginException(PluginException ex) {
         Map<String, Object> response = new HashMap<>();
-        response.put("status", MessageConstants.STATUS_ERROR);
-        response.put("message", ex.getMessage());
+        response.put(MessageConstants.STATUS, MessageConstants.STATUS_ERROR);
+        response.put(MessageConstants.MESSAGE, ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
@@ -86,8 +89,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Map<String, Object>> handleRuntimeException(RuntimeException ex) {
         Map<String, Object> response = new HashMap<>();
-        response.put("status", MessageConstants.STATUS_ERROR);
-        response.put("message", String.format(MessageConstants.ERROR_UNEXPECTED, ex.getMessage()));
+        response.put(MessageConstants.STATUS, MessageConstants.STATUS_ERROR);
+        response.put(MessageConstants.MESSAGE, String.format(ERROR_UNEXPECTED, ex.getMessage()));
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }

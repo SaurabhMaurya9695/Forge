@@ -13,10 +13,10 @@ public final class ApiConstants {
 
     // API Base Paths
     public static final String API_BASE_PATH = "/api";
-    public static final String API_AUTH_PATH = "/api/auth";
-    public static final String API_HEALTH_PATH = "/api/health";
-    public static final String API_TEST_PATH = "/api/test";
-    public static final String API_PLUGINS_PATH = "/api/plugins";
+    public static final String API_AUTH_PATH = API_BASE_PATH + "/auth";
+    public static final String API_HEALTH_PATH = API_BASE_PATH + "/health";
+    public static final String API_TEST_PATH = API_BASE_PATH + "/test";
+    public static final String API_PLUGINS_PATH = API_BASE_PATH + "/plugins";
 
     // Authentication Endpoints
     public static final String ENDPOINT_REGISTER = "/register";

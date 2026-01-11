@@ -11,25 +11,14 @@ public final class MessageConstants {
         // Utility class - prevent instantiation
     }
 
-    // Success Messages
-    public static final String USER_REGISTERED_SUCCESSFULLY = "User registered successfully";
-    public static final String PLUGIN_INSTALLED_SUCCESSFULLY = "Plugin installed successfully";
-
-    // Error Messages
-    public static final String ERROR_INVALID_EMAIL_OR_PASSWORD = "Invalid email or password";
-    public static final String ERROR_VALIDATION_FAILED = "Validation failed";
-    public static final String ERROR_UNEXPECTED = "An unexpected error occurred: %s";
-    public static final String ERROR_PLUGIN_INSTALLATION_FAILED = "Plugin installation failed: %s";
-    public static final String ERROR_PLUGIN_ALREADY_INSTALLED = "Plugin '%s' is already installed";
-
-    // Status Messages
+    // Status Messages (used across multiple classes)
     public static final String STATUS_ERROR = "error";
     public static final String STATUS_UP = "UP";
     public static final String STATUS = "status";
     public static final String SERVICE = "service";
     public static final String MESSAGE = "message";
     public static final String TIMESTAMP = "timestamp";
-
-
+    public static final String USER = "user";
+    public static final String AUTHENTICATED = "authenticated";
 }
 

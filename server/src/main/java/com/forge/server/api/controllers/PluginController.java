@@ -29,6 +29,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class PluginController {
 
     private static final Logger logger = LoggerFactory.getLogger(PluginController.class);
+    public static final String RECEIVED_PLUGIN_INSTALLATION_REQUEST_PLUGIN_NAME_JAR_PATH_CLASS_NAME =
+            "Received plugin installation request: pluginName={}, jarPath={}, className={}";
+    public static final String PLUGIN_INSTALLATION_SUCCESSFUL_PLUGIN_NAME =
+            "Plugin installation successful: pluginName={}";
+    public static final String PLUGIN_INSTALLATION_FAILED = "Plugin installation failed: {}";
 
     private final PluginService pluginService;
 
@@ -50,17 +55,16 @@ public class PluginController {
     @PostMapping(ApiConstants.ENDPOINT_PLUGIN_INSTALL)
     public ResponseEntity<PluginInstallResponse> installPlugin(@Valid @RequestBody PluginInstallRequest request) {
 
-        logger.info("Received plugin installation request: pluginName={}, jarPath={}, className={}",
-                request.getPluginName(), request.getJarPath(), request.getClassName());
+        logger.info(RECEIVED_PLUGIN_INSTALLATION_REQUEST_PLUGIN_NAME_JAR_PATH_CLASS_NAME, request.getPluginName(),
+                request.getJarPath(), request.getClassName());
 
         try {
             PluginInstallResponse response = pluginService.installPlugin(request.getPluginName(), request.getJarPath(),
                     request.getClassName());
-
-            logger.info("Plugin installation successful: pluginName={}", request.getPluginName());
+            logger.info(PLUGIN_INSTALLATION_SUCCESSFUL_PLUGIN_NAME, request.getPluginName());
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (PluginException e) {
-            logger.error("Plugin installation failed: {}", e.getMessage(), e);
+            logger.error(PLUGIN_INSTALLATION_FAILED, e.getMessage(), e);
             throw e;
         }
     }
