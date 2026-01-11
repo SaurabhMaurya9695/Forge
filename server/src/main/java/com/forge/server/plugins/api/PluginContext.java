@@ -1,6 +1,7 @@
 package com.forge.server.plugins.api;
 
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public interface PluginContext {
 
@@ -12,5 +13,5 @@ public interface PluginContext {
         return getConfig(key).orElse(defaultValue);
     }
 
-    org.slf4j.Logger getLogger();
+    Logger getLogger();
 }
