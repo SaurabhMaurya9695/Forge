@@ -23,6 +23,7 @@
         <module>forge-common</module>
         <module>forge-shared</module>
         <module>server</module>
+        <module>plugins/github</module>
         <module>dist</module>
         <!-- Add more modules here as you create them -->
         <!-- <module>worker</module> -->

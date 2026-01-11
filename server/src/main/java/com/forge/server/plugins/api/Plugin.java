@@ -10,6 +10,8 @@ public interface Plugin {
 
     void init(PluginContext pluginContext) throws PluginException;
 
+    void start() throws PluginException;
+
     void stop() throws PluginException;
 
     void destroy();

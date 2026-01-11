@@ -31,7 +31,7 @@ public class PluginManager implements PluginRegistry {
     private static final String PLUGIN_SERVICE_FILE = "META-INF/services/com.forge.server.plugins.api.Plugin";
     private static final String DIST_LIB = "dist/lib";
     private static final String USER_DIR = "user.dir";
-    private static final String JAR = ".jar";
+    private static final String PLUGIN_JAR = "-plugin.jar";
     private static final String PLUGIN_JAR_FILE_NOT_FOUND = "Plugin JAR file not found: ";
     private static final String PLUGIN_CLASS_NOT_FOUND_IN_JAR = "Plugin class not found in JAR: ";
     private static final String CLASS_DOES_NOT_IMPLEMENT_PLUGIN_INTERFACE =
@@ -61,7 +61,7 @@ public class PluginManager implements PluginRegistry {
 
     public Plugin installPlugin(String pluginName) throws PluginException, IOException {
         long startTime = System.currentTimeMillis();
-        Path jarFile = Paths.get(System.getProperty(USER_DIR), DIST_LIB, pluginName + JAR);
+        Path jarFile = Paths.get(System.getProperty(USER_DIR), DIST_LIB, pluginName.toLowerCase() + PLUGIN_JAR);
 
         if (!Files.exists(jarFile) || !Files.isRegularFile(jarFile)) {
             throw new PluginException(PLUGIN_JAR_FILE_NOT_FOUND + jarFile);
@@ -84,7 +84,7 @@ public class PluginManager implements PluginRegistry {
             @SuppressWarnings("unchecked") Class<? extends Plugin> pluginType = (Class<? extends Plugin>) pluginClass;
             Plugin plugin = pluginType.getDeclaredConstructor().newInstance();
             PluginContext context = new SimplePluginContext(pluginName);
-
+            plugin.init(context);
             plugins.put(pluginName, new PluginWrapper(plugin, context));
             classLoaders.put(pluginName, classLoader);
 
@@ -150,8 +150,10 @@ public class PluginManager implements PluginRegistry {
         private final Logger logger;
 
         public SimplePluginContext(String pluginName) {
+            String pluginClass = pluginName.substring(0, 1).toUpperCase() + pluginName.substring(1).toLowerCase()
+                    + "Plugin";
             this.pluginName = pluginName;
-            this.logger = Logger.getLogger("Plugin." + pluginName);
+            this.logger = Logger.getLogger("com.forge." + pluginName.toLowerCase() + "." + pluginClass);
         }
 
         @Override

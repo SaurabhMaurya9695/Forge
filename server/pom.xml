@@ -124,6 +124,31 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             
+            <!-- Build Helper Plugin - attach original JAR for plugin compilation -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.4.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-original-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>${project.build.directory}/${project.build.finalName}.jar.original</file>
+                                    <type>jar</type>
+                                    <classifier>original</classifier>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
             <!-- Copy the Spring Boot fat JAR to dist/lib after packaging -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
