@@ -5,7 +5,6 @@ import com.forge.server.plugins.PluginManager;
 import com.forge.server.plugins.api.Plugin;
 import com.forge.server.plugins.api.PluginState;
 import com.forge.shared.model.response.PluginInstallResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -18,21 +17,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class PluginInstallationService {
 
-    private static final Logger logger = LoggerFactory.getLogger(PluginInstallationService.class);
-
     private static final String PLUGIN_INSTALLED_SUCCESSFULLY = "Plugin installed successfully";
     private static final String ERROR_PLUGIN_ALREADY_INSTALLED = "Plugin '%s' is already installed";
     private static final String ERROR_PLUGIN_INSTALLATION_FAILED = "Plugin installation failed: %s";
     private static final String ERROR_PLUGIN_NOT_FOUND_AFTER_INSTALLATION = "Plugin not found after installation";
+
+    private static final Logger logger = LoggerFactory.getLogger(PluginInstallationService.class);
+    private static final String ERROR_DURING_PLUGIN_INSTALLATION_FOR =
+            "I/O error during plugin installation for '{}': {}";
+    private static final String PLUGIN_INSTALLATION_FAILED_FOR = "Plugin installation failed for '{}': {}";
+    private static final String I_O_ERROR = "I/O error: ";
     public static final String INSTALLING_PLUGIN_NAME_JAR_PATH_CLASS_NAME =
             "Installing plugin: name={}, jarPath={}, className={}";
-    private static final String PLUGIN_IS_ALREADY_INSTALLED = "Plugin '{}' is already installed";
-    private static final String PLUGIN_INSTALLATION_RETURNED_SUCCESS_BUT_PLUGIN_NOT_FOUND =
-            "Plugin '{}' installation returned success but plugin not found";
-    private static final String PLUGIN_INSTALLED_SUCCESSFULLY1 = "Plugin '{}' installed successfully";
-    private static final String PLUGIN_INSTALLATION_FAILED_FOR = "Plugin installation failed for '{}': {}";
-    private static final String UNEXPECTED_ERROR_DURING_PLUGIN_INSTALLATION_FOR =
-            "Unexpected error during plugin installation for '{}': {}";
+    public static final String PLUGIN_IS_ALREADY_INSTALLED = "Plugin '{}' is already installed";
 
     private final PluginManager pluginManager;
 
@@ -72,14 +69,13 @@ public class PluginInstallationService {
             }
 
             // Delegate to PluginManager for installation
-            String result = pluginManager.installPlugin(pluginName, jarPath, className);
-
-            // Get the installed plugin to retrieve metadata
-            Plugin installedPlugin = pluginManager.getPlugin(pluginName);
-            if (installedPlugin == null) {
-                logger.error(PLUGIN_INSTALLATION_RETURNED_SUCCESS_BUT_PLUGIN_NOT_FOUND, pluginName);
-                throw new PluginException(
-                        String.format(ERROR_PLUGIN_INSTALLATION_FAILED, ERROR_PLUGIN_NOT_FOUND_AFTER_INSTALLATION));
+            Plugin installedPlugin;
+            try {
+                installedPlugin = pluginManager.installPlugin(pluginName, jarPath, className);
+            } catch (java.io.IOException e) {
+                logger.error(ERROR_DURING_PLUGIN_INSTALLATION_FOR, pluginName, e.getMessage(), e);
+                throw new PluginException(String.format(ERROR_PLUGIN_INSTALLATION_FAILED, I_O_ERROR + e.getMessage()),
+                        e);
             }
 
             // Build response
@@ -90,13 +86,13 @@ public class PluginInstallationService {
                     installedPlugin.getState() != null ? installedPlugin.getState().name() : PluginState.LOADED.name());
             response.setMessage(PLUGIN_INSTALLED_SUCCESSFULLY);
 
-            logger.info(PLUGIN_INSTALLED_SUCCESSFULLY1, pluginName);
+            logger.info("Plugin '{}' installed successfully", pluginName);
             return response;
         } catch (PluginException e) {
             logger.error(PLUGIN_INSTALLATION_FAILED_FOR, pluginName, e.getMessage(), e);
             throw e;
         } catch (Exception e) {
-            logger.error(UNEXPECTED_ERROR_DURING_PLUGIN_INSTALLATION_FOR, pluginName, e.getMessage(), e);
+            logger.error(PLUGIN_INSTALLATION_FAILED_FOR, pluginName, e.getMessage(), e);
             throw new PluginException(String.format(ERROR_PLUGIN_INSTALLATION_FAILED, e.getMessage()), e);
         }
     }
